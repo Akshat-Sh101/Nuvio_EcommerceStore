@@ -1,46 +1,438 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20 gap-10">
-        <div class="w-[30%] rounded-md overflow-hidden">
-            <div class="w-full h-80 bg-yellow-500"></div>
-            <div class="w-full flex justify-between px-5 py-4">
-                <h3 class="text-2xl">Clinge Bag</h3>
-                <div class="flex items-center gap-2">
-                    <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-add-line"></i>
-                    <div class="px-2 py-1 rounded-md bg-white text-black">01</div>
-                    <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-subtract-line"></i>
-                </div>
-            </div>
-            <div class="flex items-center justify-between px-5 py-3">
-                <h4 class="text-lg">Net Total</h4>
-                <h2 class="text-lg">₹ 1200</h2>
-            </div>
-        </div>
-        <div class="w-[70%]">
-            <h3 class="text-xl">Price Breakdown</h3>
-            <div class="px-10 mt-5">
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Total MRP</h4>
-                    <h4>₹ 1920</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Discount on MRP</h4>
-                    <h4>₹ 0</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Platform Fee</h4>
-                    <h4>₹ 20</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Shipping Fee</h4>
-                    <h4>FREE</h4>
-                </div>
-            </div>
-            <div class="w-full h-[1px] bg-black mt-10"></div>
-            <div class="flex mt-5">
-                <h3 class="w-1/3 text-xl">Total Amount</h3>
-                <h3 class="font-semibold text-xl text-green-600">₹ 1940</h3>
-            </div>
-            <form action=""></form>
-        </div>
+
+<style>
+  .delete-button {
+    opacity: 0;
+    width: 40px;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  .product-card:hover .delete-button {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .product-card {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .success-checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+  .check-icon {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    border-radius: 50%;
+    box-sizing: content-box;
+    border: 4px solid #4CAF50;
+  }
+  .check-icon::before {
+    top: 3px;
+    left: -2px;
+    width: 30px;
+    transform-origin: 100% 50%;
+    border-radius: 100px 0 0 100px;
+  }
+  .check-icon::after {
+    top: 0;
+    left: 30px;
+    width: 60px;
+    transform-origin: 0 50%;
+    border-radius: 0 100px 100px 0;
+    animation: rotate-circle 4.25s ease-in;
+  }
+  .check-icon::before, .check-icon::after {
+    content: '';
+    height: 100px;
+    position: absolute;
+    background: #FFFFFF;
+    transform: rotate(-45deg);
+  }
+  .icon-line {
+    height: 5px;
+    background-color: #4CAF50;
+    display: block;
+    border-radius: 2px;
+    position: absolute;
+    z-index: 10;
+  }
+  .icon-line.line-tip {
+    top: 46px;
+    left: 14px;
+    width: 25px;
+    transform: rotate(45deg);
+    animation: icon-line-tip 0.75s;
+  }
+  .icon-line.line-long {
+    top: 38px;
+    right: 8px;
+    width: 47px;
+    transform: rotate(-45deg);
+    animation: icon-line-long 0.75s;
+  }
+  .icon-circle {
+    top: -4px;
+    left: -4px;
+    z-index: 10;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    position: absolute;
+    box-sizing: content-box;
+    border: 4px solid rgba(76, 175, 80, .5);
+  }
+  .icon-fix {
+    top: 8px;
+    width: 5px;
+    left: 26px;
+    z-index: 1;
+    height: 85px;
+    position: absolute;
+    transform: rotate(-45deg);
+    background-color: #FFFFFF;
+  }
+  @keyframes rotate-circle {
+    0% {
+      transform: rotate(-45deg);
+    }
+    5% {
+      transform: rotate(-45deg);
+    }
+    12% {
+      transform: rotate(-405deg);
+    }
+    100% {
+      transform: rotate(-405deg);
+    }
+  }
+  @keyframes icon-line-tip {
+    0% {
+      width: 0;
+      left: 1px;
+      top: 19px;
+    }
+    54% {
+      width: 0;
+      left: 1px;
+      top: 19px;
+    }
+    70% {
+      width: 50px;
+      left: -8px;
+      top: 37px;
+    }
+    84% {
+      width: 17px;
+      left: 21px;
+      top: 48px;
+    }
+    100% {
+      width: 25px;
+      left: 14px;
+      top: 45px;
+    }
+  }
+  @keyframes icon-line-long {
+    0% {
+      width: 0;
+      right: 46px;
+      top: 54px;
+    }
+    65% {
+      width: 0;
+      right: 46px;
+      top: 54px;
+    }
+    84% {
+      width: 55px;
+      right: 0px;
+      top: 35px;
+    }
+    100% {
+      width: 47px;
+      right: 8px;
+      top: 38px;
+    }
+  }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Your Cart</h1>
+    
+    <% if( ordersuccess && ordersuccess > 0) { %>
+      <!-- Success Modal -->
+<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg p-8 max-w-md w-full transform scale-95 opacity-0">
+    <div class="success-checkmark">
+      <div class="check-icon">
+        <span class="icon-line line-tip"></span>
+        <span class="icon-line line-long"></span>
+        <div class="icon-circle"></div>
+        <div class="icon-fix"></div>
+      </div>
     </div>
-    <%- include('./partials/footer') %>
+    <h2 class="text-2xl font-bold text-center text-gray-800 mt-4">Order Placed Successfully!</h2>
+    <p class="text-center text-gray-600 mt-2">Thank you for your purchase.</p>
+    <button type="submit" id="close-success-modal" class="w-full mt-6 bg-green-600 text-white text-lg font-semibold py-2 rounded-xl hover:bg-green-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+      Close
+    </button>
+  </div>
+</div><!-- Success Modal -->
+<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg p-8 max-w-md w-full transform scale-95 opacity-0">
+    <div class="success-checkmark">
+      <div class="check-icon">
+        <span class="icon-line line-tip"></span>
+        <span class="icon-line line-long"></span>
+        <div class="icon-circle"></div>
+        <div class="icon-fix"></div>
+      </div>
+    </div>
+    <h2 class="text-2xl font-bold text-center text-gray-800 mt-4">Order Placed Successfully!</h2>
+    <p class="text-center text-gray-600 mt-2">Thank you for your purchase.</p>
+    <button type="submit" id="close-success-modal" class="w-full mt-6 bg-green-600 text-white text-lg font-semibold py-2 rounded-xl hover:bg-green-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+      Close
+    </button>
+  </div>
+</div>
+    <% } %>
+    <% if(success && success.length > 0) { %>
+      <div id="success-message" class="fixed top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-green-500 text-white opacity-0">
+        <%= success %>
+      </div>
+    <% } %>
+    <% if(error && error.length > 0) { %>
+      <div id="error-message" class="fixed top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-red-500 text-white opacity-0">
+        <%= error %>
+      </div>
+    <% } %>
+    <!-- Cart Items Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
+      <% var totalMRP = 0 %>
+      <% var totalDiscount = 0 %>
+      <% usercart.cartItems.forEach((products, index) => { %>
+        <% totalMRP += products.product.price * products.quantity %>
+        <% var discountAmount = Math.floor((products.product.price * (Number(products.product.discount)/100)) * products.quantity) %>
+        <% totalDiscount += discountAmount %>
+        <% var discountedPrice = products.product.price - (discountAmount / products.quantity) %>
+        <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 max-w-xs mx-auto w-full relative">
+          <button class="delete-button absolute top-2 z-10 left-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-all duration-300 transform -translate-x-full">
+            <a href="/carts/deletefromcart/<%= products.product._id %>" class="flex items-center justify-center">
+              <i class="ri-delete-bin-line"></i>
+            </a>
+          </button>
+          <!-- Discount Badge -->
+          <div class="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-bl-2xl font-semibold text-sm">
+            <%= Number(products.product.discount) %>% OFF
+          </div>
+          <!-- Product Image -->
+          <div class="w-full h-48 flex justify-center items-center z-5 transition-all duration-300 hover:scale-105" style="background-color: <%= products.product.bgcolor %>;">
+            <img class="h-36 object-contain" src="data:image/jpeg;base64,<%= products.product.image.toString('base64') %>" alt="<%= products.product.name %>">
+          </div>
+          <!-- Product Details -->
+          <div class="p-4" style="background-color: <%= products.product.panelcolor %>;">
+            <h3 class="text-lg mb-3 font-semibold text-[<%= products.product.textcolor %>]"><%= products.product.name %></h3>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <button class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex justify-center items-center hover:bg-gray-300 transition-colors">
+                  <a href="/carts/decrease/<%= products.product._id %>" class="flex items-center justify-center w-full h-full">
+                    <i class="ri-subtract-line"></i>
+                  </a>
+                </button>
+                <span class="px-3 py-1 text-base font-medium bg-white rounded-md"><%= products.quantity %></span>
+                <button class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex justify-center items-center hover:bg-gray-300 transition-colors">
+                  <a href="/carts/increase/<%= products.product._id %>" class="flex items-center justify-center w-full h-full">
+                    <i class="ri-add-line"></i>
+                  </a>
+                </button>
+              </div>
+              <div class="text-right">
+                <span class="text-base font-bold" style="color: <%= products.product.textcolor %>;">₹ <%= discountedPrice %></span>
+                <span class="text-sm line-through ml-2 text-gray-500">₹ <%= products.product.price %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- Price Breakdown Section -->
+    <form id="checkout-form" class="bg-white rounded-2xl shadow-md p-8 max-w-md mx-auto transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2" method="post" action="/orders/order">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">Order Summary</h3>
+      <div class="space-y-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">Total MRP</span>
+          <span class="text-gray-800" >₹ <%= totalMRP %></span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">Discount on MRP</span>
+          <input class="text-green-600 inline-block" name="totaldiscount" value="- ₹ <%= totalDiscount %>" readonly>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">Platform Fee</span>
+          <span class="text-gray-800">₹ 20</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-600">Shipping Fee</span>
+          <span class="text-green-600 font-medium">FREE</span>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 mt-6 pt-6">
+        <div class="flex justify-between items-center">
+          <span class="text-lg font-semibold text-gray-800">Total Amount</span>
+          <input class="text-2xl inline-block font-bold text-green-600" name="totalamount" value="₹ <%= totalMRP - totalDiscount + 20 %>" readonly>
+        </div>
+      </div>
+      <div class="mt-6">
+        <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+        <textarea id="address" name="address" rows="3" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-green-500" required></textarea>
+      </div>
+      <button type="submit" id="checkout-btn" class="w-full mt-8 bg-green-600 text-white text-lg font-semibold py-4 rounded-xl hover:bg-green-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform hover:scale-105">
+        Proceed to Checkout
+      </button>
+    </form>
+  </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Entrance animations for product cards
+  gsap.utils.toArray('.product-card').forEach((card, index) => {
+    gsap.to(card, {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      delay: index * 0.1,
+      ease: 'power3.out'
+    });
+  });
+
+  // Animate success message
+  const successMessage = document.getElementById('success-message');
+  if (successMessage) {
+    gsap.to(successMessage, {
+      opacity: 1,
+      y: 20,
+      duration: 0.5,
+      ease: 'power3.out'
+    });
+    gsap.to(successMessage, {
+      opacity: 0,
+      y: -20,
+      delay: 3,
+      duration: 0.5,
+      ease: 'power3.in'
+    });
+  }
+
+  // Animate error message
+  const errorMessage = document.getElementById('error-message');
+  if (errorMessage) {
+    gsap.to(errorMessage, {
+      opacity: 1,
+      y: 20,
+      duration: 0.5,
+      ease: 'power3.out'
+    });
+    gsap.to(errorMessage, {
+      opacity: 0,
+      y: -20,
+      delay: 3,
+      duration: 0.5,
+      ease: 'power3.in'
+    });
+  }
+
+  // Hover effect for checkout button
+  const checkoutBtn = document.getElementById('checkout-btn');
+  checkoutBtn.addEventListener('mouseenter', () => {
+    gsap.to(checkoutBtn, {
+      scale: 1.05,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+  });
+  checkoutBtn.addEventListener('mouseleave', () => {
+    gsap.to(checkoutBtn, {
+      scale: 1,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+  });
+
+  // Hover effect for delete buttons
+  gsap.utils.toArray('.delete-button').forEach(button => {
+    button.addEventListener('mouseenter', () => {
+      gsap.to(button, {
+        scale: 1.1,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+    button.addEventListener('mouseleave', () => {
+      gsap.to(button, {
+        scale: 1,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+  });
+
+  // Form submission and address validation
+  const checkoutForm = document.getElementById('checkout-form');
+  const addressField = document.getElementById('address');
+  const successModal = document.getElementById('success-modal');
+  const closeSuccessModalBtn = document.getElementById('close-success-modal');
+
+  checkoutForm.addEventListener('submit', (e) => {
+    if (addressField.value.trim() === '') {
+      alert('Please enter a delivery address');
+      return;
+    }
+    
+    // Simulate order placement (replace with actual API call)
+    // setTimeout(() => {
+    //   showSuccessModal();
+    // }, 1000);
+  });
+
+  function showSuccessModal() {
+    successModal.classList.remove('hidden');
+    gsap.to(successModal.querySelector('div'), {
+      scale: 1,
+      opacity: 1,
+      duration: 0.5,
+      ease: 'back.out(1.7)'
+    });
+  }
+
+  closeSuccessModalBtn.addEventListener('click', () => {
+    gsap.to(successModal.querySelector('div'), {
+      scale: 0.95,
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.in',
+      onComplete: () => {
+        successModal.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>
+
+<%- include('./partials/footer') %>
+

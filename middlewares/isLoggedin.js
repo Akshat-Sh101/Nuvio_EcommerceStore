@@ -13,7 +13,7 @@ module.exports.isLoggedin =async (req,res,next)=>{
         .findOne({email:decode.email})
         .select('-password'); // means excluding password field for privacy and is not required
 
-        req.user = user;
+        req.user = user; // create a variable user containing the data of user specially for get routes.
 
         next();
     }

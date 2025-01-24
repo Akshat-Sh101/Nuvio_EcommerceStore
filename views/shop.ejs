@@ -1,49 +1,126 @@
-<%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex items-center gap-2">
-                <h3>sort by</h3>
-                <form action="/shop">
-                    <select class="border-[1px] px-2 py-1" name="sortby" id="">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="../public/stylesheets/shop.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <%- include('./partials/header') %>
+    <div class="sticky-header mb-6 mt-14 ">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <% if(success.length > 0) { %>
+                <div class="success-message fixed top-5 left-1/2 transform -translate-x-1/2 p-4 rounded-md bg-green-500 text-white shadow-lg z-100">
+                    <%= success %>
+                </div>
+                <% } %>
+            <h1 class="text-3xl font-semibold text-gray-800 ">Our Products</h1>
+            <div class="flex items-center gap-4">
+                <span class="text-gray-600">Sort by:</span>
+                <form action="/shop" class="inline-block">
+                    <select name="sortby" onchange="this.form.submit()" class="w-[7rem] sort-select border border-gray-300 rounded-md px-4 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="popular">Popular</option>
                         <option value="newest">Newest</option>
                     </select>
                 </form>
             </div>
-            <div class="flex flex-col mt-20">
-                <a class="block w-fit mb-2" href="">New Collection</a>
-                <a class="block w-fit mb-2" href="">All Products</a>
-                <a class="block w-fit mb-2" href="">Discounted Products</a>
+        </div>
+    </div>
+
+   
+
+    <div class="container mx-auto px-4 flex flex-col md:flex-row gap-8">
+        <div class="md:w-1/4 lg:w-1/5">
+            <div class="filter-section p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Categories</h2>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">New Collection</a></li>
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">All Products</a></li>
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Discounted Products</a></li>
+                </ul>
             </div>
-            <div class="mt-32">
-                <a class="block w-fit mb-2" href="">Filter by :</a>
-                <a class="block w-fit mb-2" href="">Availability</a>
-                <a class="block w-fit mb-2" href="">Discount</a>
+            <div class="filter-section p-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Filter by</h2>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-600 hover:text-gray-800 transition-colors">Availability</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-800 transition-colors">Discount</a></li>
+                </ul>
             </div>
         </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
-            <div class="flex items-start gap-5 flex-wrap">
-                <% products.forEach(function(product){ %>
-                    <div class="w-60 h-42 rounded-md border-2 border-black ">
-                        <div class="w-full  h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
-                            <img class="h-[90%] w-[70%] " src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="bag">
+
+        <div class="md:w-3/4 lg:w-4/5">
+            <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <% products.forEach((product, index) => { %>
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="relative">
+                        <div class="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-sm font-bold">
+                            <%= Number(product.discount) %>% OFF
                         </div>
-                        <div
-                            class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
-                            <div>
-                                <h3>
-                                    <%= product.name %>
-                                </h3>
-                                <h4>₹ <%= product.price %>
-                                </h4>
-                            </div>
-                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white hover:border-black hover:border-2 hover:animate-spin360" href="">
+                        <div class="w-full h-48 flex justify-center items-center" style="background-color: <%= product.bgcolor %>;">
+                            <img class="h-36 object-contain transition-transform duration-300 transform hover:scale-110" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                        </div>
+                    </div>
+                    <div class="p-4" style="background-color: <%= product.panelcolor %>;">
+                        <h3 class="text-lg font-semibold mb-2" style="color: <%= product.textcolor %>;"><%= product.name %></h3>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold" style="color: <%= product.textcolor %>;">₹ <%= product.price %></span>
+                            <a href="/addtocart/<%= product._id %>" class="bg-white text-gray-800 rounded-full p-2 hover:bg-gray-100 transition-colors">
                                 <i class="ri-add-line"></i>
                             </a>
                         </div>
                     </div>
-                    <% }) %>
+                </div>
+                <% }) %>
+            </div> -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 ml-[3%]">
+            
+                <% products.forEach((product, index) => { %>
+                    
+                    <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 max-w-xs mx-auto w-full relative">
+                        
+                    <div class="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-bl-2xl font-semibold text-sm">
+                        <%= Number(product.discount) %>% OFF
+                    </div>
+                    <div class="w-full h-48 flex justify-center items-center z-5 transition-all duration-300 hover:scale-105" style="background-color: <%= product.bgcolor %>;">
+                        <img class="h-36 object-contain" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                    </div>
+                    <div class="p-4" style="background-color: <%= product.panelcolor %>;">
+                        <h3 class="text-lg mb-3 font-semibold text-[<%= product.textcolor %>]"><%= product.name %></h3>
+                        <div class="flex items-center justify-between">
+                            
+                            <div class="text-right flex items-center justify-between w-full">
+                          <span class="text-xl font-bold" style="color: <%= product.textcolor %>;">₹ <%= product.price %></span>
+                          <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white hover:border-[<%= product.panelcolor %>] hover:border-2" href="/carts/addtocart/<%= product._id %>">
+                              <i class="ri-add-line text-black"></i>
+                        </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <% }) %>
+        </div>
         </div>
     </div>
+
     <%- include('./partials/footer') %>
+
+    <script>
+        // Fade out success message
+        setTimeout(() => {
+            const successMessage = document.querySelector('.success-message');
+            if (successMessage) {
+                successMessage.style.opacity = '0';
+                setTimeout(() => successMessage.remove(), 500);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
+
+
+
+
+

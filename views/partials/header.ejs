@@ -6,10 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="font-['helvetica_now_display']">
-    <nav class="w-full fixed top-0 left-0 px-5 py-3">
-        <h3 class="text-xl">Scatch</h3>
+    <nav class="navbar w-full fixed top-0 left-0 px-5 py-3  justify-between flex items-center  mb-[8rem]">
+        <h3 class="text-xl m-2">Nuvio</h3>
+        <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
+        <% if(loggedin){ %>
+        <div class="flex gap-7 mr-5 font-light text-lg">
+            <a href="/shop" class="p-2 cursor-pointer hover:text-gray-700 ">Shop</a>
+            <a href="/carts/cart" class="p-2 cursor-pointer hover:text-gray-700 ">Cart</a>
+            <a href="/users/account" class="p-2 cursor-pointer hover:text-gray-700 ">My Account</a>
+            <a href="/users/logout" class="text-red-800 p-2 cursor-pointer hover:text-red-500 ">Logout</a>
+        </div>
+        <% } %>
     </nav>

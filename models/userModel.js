@@ -6,15 +6,13 @@ const userSchema = mongoose.Schema({
     email: String,
     password: String,
     cart: {
-        type: Array,
-        default: [],
-    },
-    orders: {
-        type: Array,
-        default: [],
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "cart",
     },
     contact: Number,
-    picture: String,
+    picture: {
+        type:   Buffer,
+    },
 });
 
 module.exports = mongoose.model("user",userSchema)

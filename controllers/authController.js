@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 const userModel = require('../models/userModel')
+const cartModel = require('../models/cartModel')
+
 const {registerSchema} = require('../models/registerModel')
 const { generateToken } = require('../utils/generateToken')
 
@@ -32,7 +34,14 @@ let registerUser = async (req,res)=>{
                     })
                     let token = generateToken(user)
                     res.cookie("token", token)
-                    res.send("User Created Successfully...")
+                    let usercart = await cartModel.create({
+                        user:user._id,
+                        cartItems: [],
+                    })
+                    user.cart = usercart._id;
+                    await user.save()
+                    req.flash("success","User Created Successfully...")
+                    return res.redirect('/')
                 }
             })
         })
@@ -67,7 +76,7 @@ let loginUser = async (req,res)=>{
 
 let logoutUser = (req,res)=>{
     res.cookie("token","");
-    res.redirect("/")
+    return res.redirect("/")
 }
 
 module.exports.registerUser = registerUser ;

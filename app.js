@@ -3,7 +3,9 @@ const app = express()
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const ownersRouter = require('./routes/ownersRouter')
+const ordersRouter = require('./routes/ordersRouter')
 const usersRouter = require('./routes/usersRouter')
+const cartsRouter = require('./routes/cartsRouter')
 const productsRouter = require('./routes/productsRouter')
 const indexRouter = require("./routes/index")
 const flash = require("connect-flash") // to use false message for mainly showing errors we always use expressSesssion
@@ -16,7 +18,7 @@ const db = require('./config/mongoose-connection');
 require("dotenv").config();    // is line se apne jitne variables banae hai .env file me vo use me aa jainge (process.env.<keyname>)
 
 app.use(express.json())
-app.use(express.static(path.join(__dirname,"public")))
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
 
 app.use(
@@ -35,5 +37,7 @@ app.use('/',indexRouter)
 app.use('/owners', ownersRouter)
 app.use('/users', usersRouter)
 app.use('/products', productsRouter)
+app.use('/carts', cartsRouter)
+app.use('/orders', ordersRouter)
 
 app.listen(3000)
