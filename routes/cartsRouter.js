@@ -4,6 +4,7 @@ const { isLoggedin } = require("../middlewares/isLoggedin");
 const productModel = require('../models/productModel');
 const userModel = require("../models/userModel");
 const cartModel = require("../models/cartModel");
+const ownerModel = require('../models/ownerModel');
 
 
 
@@ -18,7 +19,7 @@ router.get('/addtocart/:productid', isLoggedin, async (req, res) => {
         }
 
         // Fetch the user's cart
-        let usercart = await cartModel.findOne({ user: user._id });
+        let usercart = await cartModel.findOne({ user: user._id })
 
         // Fetch the product being added to the cart
         const product = await productModel.findById(req.params.productid);
@@ -43,13 +44,17 @@ router.get('/addtocart/:productid', isLoggedin, async (req, res) => {
         if (itemIndex > -1) {
             // If product exists in the cart, increment the quantity
             usercart.cartItems[itemIndex].quantity += 1;
+            // product.mostviewed++;
         } else {
             // If product is not in the cart, add it
             usercart.cartItems.push({ product: product._id, quantity: 1 });
         }
+        
+        product.mostviewed++;
 
         // Save the updated cart
         await usercart.save();
+        await product.save();
 
         req.flash("success", "Product successfully added to cart.");
         res.redirect("/shop");

@@ -1,0 +1,46 @@
+<%- include('./partials/header') %>
+
+
+
+            <div class="min-h-screen flex flex-col">
+                <div class="container px-10 py-20 flex flex-grow">
+                    <div class="w-[25%] flex h-screen flex-col items-start">
+                        <div class="flex flex-col">
+                            <a class="block w-fit mb-2" href="/owners/all">All Products</a>
+                            <a class="block w-fit mb-2" href="/owners/admin" data-tab="new">Create new product</a>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 ml-[3%]">
+                        <% if(success && success.length > 0) { %>
+                            <div id="success-message" class="fixed top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-green-500 text-white opacity-1">
+                              <%= success %>
+                            </div>
+                          <% } %>
+                        <% products.forEach((product, index) => { %>
+                            
+                            <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 max-w-xs mx-auto w-full relative">
+                                
+                            <div class="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-bl-2xl font-semibold text-sm">
+                                <%= Number(product.discount) %>% OFF
+                            </div>
+                            <div class="w-full h-48 flex justify-center items-center z-5 transition-all duration-300 hover:scale-105" style="background-color: <%= product.bgcolor %>;">
+                                <img class="h-36 object-contain" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                            </div>
+                            <div class="p-4" style="background-color: <%= product.panelcolor %>;">
+                                <h3 class="text-lg mb-3 font-semibold text-[<%= product.textcolor %>]"><%= product.name %></h3>
+                                <div class="flex items-center justify-between">
+                                    
+                                    <div class="text-right flex items-center justify-between w-full">
+                                  <span class="text-xl font-bold" style="color: <%= product.textcolor %>;">₹ <%= product.price %></span>
+                                  <a class="w-10 h-7 p-3 flex items-center justify-center rounded-md bg-white hover:border-black hover:border-2" href="/owners/update/<%= product._id %>">
+                                      <p class="m-3">Edit</p>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+                </div>
+            </div>
+            <%- include('./partials/footer') %>

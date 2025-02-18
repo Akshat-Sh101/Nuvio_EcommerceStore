@@ -20,7 +20,7 @@ router.post("/order",isLoggedin,async (req,res)=>{
         address:address,
         totalDiscount:totaldiscount
     })
-    // await usercart.findOneAndUpdate({user: usercart.user},{cartItems:[],updatedAt: Date.now});
+    
     usercart.cartItems = []
     await usercart.save()
     req.flash("ordersuccess","order placed.")

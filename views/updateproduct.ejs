@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        input[type="color"] {
+            
+            border: none;
+            width: 32px;
+            height: 32px;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <a href="/owners/all" class="absolute ml-[6%] mt-[4%] rounded-lg bg-gray-300 px-3 py-2 hover:border-black hover:border-2"><button>Return</button></a>
+    <div class="container mx-auto p-8 max-w-2xl">
+        <h1 class="text-3xl font-bold mb-8 text-center">Update Product</h1>
+        
+        <div id="colorPreview" class="mb-8 p-6 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
+            <div id="panelPreview" class="p-4 rounded-md mb-4 transition-all duration-300 ease-in-out">
+                <h2 class="text-xl font-semibold mb-2">Color Preview</h2>
+                <p>This panel shows how your color choices will look.</p>
+            </div>
+            <p>Adjust the color inputs below to see changes in real-time!</p>
+        </div>
+
+        <form id="productForm" class="space-y-8 bg-white p-6 rounded-lg shadow-md " method="post" action="/owners/set/<%= product._id %>" >
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+                <input type="text" id="name" value="<%= product.name %>" name="name" required class="outline-none mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Enter product name">
+                <p class="mt-2 text-sm text-gray-500">This is the name that will be displayed for the product.</p>
+            </div>
+
+            <div>
+                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" value="<%= product.price %>" id="price" name="price" required min="0" step="0.01" class="outline-none mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Enter price">
+                <p class="mt-2 text-sm text-gray-500">Set the product's price.</p>
+            </div>
+
+            <div>
+                <label for="discount" class="block text-sm font-medium text-gray-700">Discount (%)</label>
+                <input type="number" value="<%= product.discount %>" id="discount" name="discount" min="0" max="100" class="outline-none mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Can not Enter dynamic discount is ON!">
+                <p class="mt-2 text-sm text-gray-500">Set the discount percentage (0-100).</p>
+            </div>
+
+            <div>
+                <label for="bgcolor" class="block text-sm font-medium text-gray-700">Background Color</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <input type="color" id="bgcolor" name="bgcolor" value="<%= product.bgcolor %>" class="outline-none w-12 h-12 p-1 rounded-md cursor-pointer">
+                    <input type="text" id="bgcolorText" class="outline-none flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="#<%= product.bgcolor %>">
+                </div>
+                <p class="mt-2 text-sm text-gray-500">Choose the background color.</p>
+            </div>
+
+            <div>
+                <label for="panelcolor" class="block text-sm font-medium text-gray-700">Panel Color</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <input type="color" id="panelcolor" name="panelcolor" value="<%= product.panelcolor %>" class="outline-none w-12 h-12 p-1 rounded-md cursor-pointer">
+                    <input type="text" id="panelcolorText" class="outline-none flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="#<%= product.panelcolor %>">
+                </div>
+                <p class="mt-2 text-sm text-gray-500">Choose the panel color.</p>
+            </div>
+
+            <div>
+                <label for="textcolor" class="block text-sm font-medium text-gray-700">Text Color</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <input type="color" id="textcolor" name="textcolor" value="<%= product.textcolor %>" class="outline-none w-12 h-12 p-1 rounded-md cursor-pointer">
+                    <input type="text" id="textcolorText" class="outline-none flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="#<%= product.textcolor %>">
+                </div>
+                <p class="mt-2 text-sm text-gray-500">Choose the text color.</p>
+            </div>
+
+            <div class="flex items-center justify-between rounded-lg border p-4">
+                <div>
+                    <label for="dynamicdiscount" class="text-base font-medium text-gray-700">Dynamic Discount</label>
+                    <p class="outline-none text-sm text-gray-500">Enable dynamic discounting for this product.</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer" >
+                    <input 
+                        type="checkbox" 
+                        id="dynamicdiscount" 
+                        value="true" 
+                        name="dynamicdiscount" 
+                        class="outline-none sr-only peer"
+                        <%= product.dynamicdiscount === "true" ? "checked" : "" %>
+                    >
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+
+            <div>
+                <label for="minPrice" class="block text-sm font-medium text-gray-700">Minimum Price</label>
+                <input type="number" id="minPrice" name="minPrice" value="<%= product.minPrice %>" required min="0" step="1' class="outline-none mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Enter minimum price">
+                <p class="mt-2 text-sm text-gray-500">Set the minimum price for this product.</p>
+            </div>
+
+
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <i data-lucide="paintbrush" class="mr-2 h-4 w-4"></i> Update Product
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    
+        // Color preview functionality
+        const colorPreview = document.getElementById('colorPreview');
+        const panelPreview = document.getElementById('panelPreview');
+        const bgColorInput = document.getElementById('bgcolor');
+        const bgColorTextInput = document.getElementById('bgcolorText');
+        const panelColorInput = document.getElementById('panelcolor');
+        const panelColorTextInput = document.getElementById('panelcolorText');
+        const textColorInput = document.getElementById('textcolor');
+        const textColorTextInput = document.getElementById('textcolorText');
+    
+        function updateColorPreview() {
+            colorPreview.style.backgroundColor = bgColorInput.value;
+            colorPreview.style.color = textColorInput.value;
+            panelPreview.style.backgroundColor = panelColorInput.value;
+        }
+    
+        function updateColorInputs(input, textInput) {
+            input.addEventListener('input', (e) => {
+                textInput.value = e.target.value;
+                updateColorPreview();
+            });
+    
+            textInput.addEventListener('input', (e) => {
+                if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                    input.value = e.target.value;
+                    updateColorPreview();
+                }
+            });
+        }
+    
+        updateColorInputs(bgColorInput, bgColorTextInput);
+        updateColorInputs(panelColorInput, panelColorTextInput);
+        updateColorInputs(textColorInput, textColorTextInput);
+    
+        // Dynamic discount functionality
+        const dynamicDiscountCheckbox = document.getElementById('dynamicdiscount');
+        const discountInput = document.getElementById('discount');
+        let previousDiscountValue = discountInput.value; // Store initial discount value
+    
+        // Function to toggle discount input's disabled state
+        function toggleDiscountInput() {
+            if (dynamicDiscountCheckbox.checked) {
+                // Save the current discount value before disabling
+                previousDiscountValue = discountInput.value;
+                discountInput.setAttribute('disabled', 'true');
+                discountInput.value = ''; // Clear value when disabled
+            } else {
+                // Restore the previous discount value when enabled
+                discountInput.removeAttribute('disabled');
+                discountInput.value = previousDiscountValue;
+            }
+        }
+    
+        // Initial state on page load
+        toggleDiscountInput();
+    
+        // Add event listener to checkbox
+        dynamicDiscountCheckbox.addEventListener('change', toggleDiscountInput);
+    </script>
+    
+    
+</body>
+</html>

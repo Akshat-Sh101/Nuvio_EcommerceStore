@@ -1,7 +1,17 @@
+// Feature's to implement in future
+//          1. AR feature 2. Dresscode suggestion system(get dress code color data and show the bags)
+//          3. adding most viewed attribute (no. of times item added in cart by all users) for for sort by and recommendation feature
+// (Done)   4. Dynamic discount(provide the min and max price and the model will automatically inc or dec the discount on basis of times ordered)
+//          5. a Bargaining chatbot for providing extra discount(if possible) based on user past orders and history
+//          6. Smart Wishlist to notify when price drops for an item.
+//          7. product price predictor: predicts the data when you can by it for lower prices within next 30 days.
+
+   
 const express = require("express")
 const app = express()
 const cookieParser = require('cookie-parser')
 const path = require('path')
+const cron = require('./utils/dynamicdiscount')
 const ownersRouter = require('./routes/ownersRouter')
 const ordersRouter = require('./routes/ordersRouter')
 const usersRouter = require('./routes/usersRouter')
@@ -32,6 +42,10 @@ app.use(flash())
 
 app.use(express.urlencoded({extended:true}))
 app.set('view engine', 'ejs');
+
+// Dynamic discount logic to run a automatic schedule using node-cron
+
+cron.dynamicdiscount();
 
 app.use('/',indexRouter)
 app.use('/owners', ownersRouter)

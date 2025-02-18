@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const upload = require('../config/multer-config');
-const productModel = require('../models/productModel')
+const productModel = require('../models/productModel');
+const ownerModel = require('../models/ownerModel');
 
 router.post("/create",upload.single("image"),async (req,res)=>{
     try{
@@ -16,6 +17,14 @@ router.post("/create",upload.single("image"),async (req,res)=>{
             panelcolor,
             textcolor
         })
+
+        let owner = await ownerModel.findOne({});
+
+        if(owner.products.indexOf(product._id) === -1){
+            owner.products.push(product._id)
+        }
+        await owner.save();
+
         req.flash("success","Product created Successfully.") // yha success is the variale which contains the message.
         res.redirect('/owners/admin')
     }
