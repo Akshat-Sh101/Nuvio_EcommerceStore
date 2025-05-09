@@ -1,4 +1,4 @@
-Nuvio Ecommerce Store
+# Nuvio Ecommerce Store
 An online shopping platform built to provide a seamless and user-friendly e-commerce experience.
 Table of Contents
 
@@ -11,19 +11,20 @@ Contributing
 License
 Contact
 
-Project Overview
+## Project Overview
 Nuvio Ecommerce Store is a full-stack web application designed to simulate a modern e-commerce platform. It allows users to browse products, add items to a cart, and complete purchases with a smooth and responsive interface. This project was developed as part of a personal portfolio to demonstrate skills in web development, including frontend design, backend logic, and database integration. It showcases proficiency in building scalable and user-centric web applications.
 Features
 
-Product Browsing: View a catalog of products with details like price, description, and images.
-Shopping Cart: Add, update, or remove items from the cart with real-time updates.
-User Authentication: Secure login and registration system for personalized shopping.
-Responsive Design: Optimized for desktops, tablets, and mobile devices.
-Search & Filters: Search products by name or category and filter by price or rating.
-Checkout Process: Simulated payment gateway for a streamlined purchase experience.
-Admin Dashboard (optional): Manage products, categories, and orders (if implemented).
+* Product Browsing: View a catalog of products with details like price, description, and images.
+* Shopping Cart: Add, update, or remove items from the cart with real-time updates.
+* User Authentication: Secure login and registration system for personalized shopping.
+* Responsive Design: Optimized for desktops, tablets, and mobile devices.
+* Search & Filters: Search products by name or category and filter by price or rating.
+* Checkout Process: Simulated payment gateway for a streamlined purchase experience.
+* Admin Dashboard : Manage products, categories, and orders (if implemented).
+* Dynamic Discounting : changes the discount by tracking the purchase reate of the product automatically
 
-Tech Stack
+## Tech Stack
 
 Frontend: React.js, HTML5, CSS3, JavaScript (ES6+), Bootstrap/Tailwind CSS
 Backend: Node.js, Express.js
